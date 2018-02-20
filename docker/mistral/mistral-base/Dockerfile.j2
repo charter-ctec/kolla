@@ -31,7 +31,8 @@ ADD plugins-archive /
 
 {% set mistral_base_pip_packages = [
     '/mistral',
-    'redis'
+    'redis',
+    'tacker'
 ] %}
 
 {% set mistral_base_plugins_pip_packages = [
@@ -40,6 +41,7 @@ ADD plugins-archive /
 
 RUN ln -s mistral-base-source/* mistral \
     && {{ macros.install_pip(mistral_base_pip_packages | customizable("pip_packages"), constraints = false) }} \
+    && apt-get install -y iputils-ping \
     && mkdir -p /etc/mistral \
     && cp -r /mistral/etc/* /etc/mistral/ \
     && chown -R mistral: /etc/mistral \
